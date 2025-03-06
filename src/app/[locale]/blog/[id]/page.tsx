@@ -1,14 +1,15 @@
-export default function BlogPage({
+export default async function BlogPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
+  const { id } = await params
   return (
     <div className="p-4">
       <h1>博客文章</h1>
       <p>
         文章ID:
-        {params.id}
+        {id}
       </p>
     </div>
   )
