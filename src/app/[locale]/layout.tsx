@@ -45,6 +45,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <div>
             <nav className="flex gap-4" aria-label="Main Navigation">
+              <span className="icon-[solar--alarm-sleep-broken]"></span>
               <Link href="/">Home</Link>
               <Link href="/about">About</Link>
               <Link href="/blog">Blog</Link>

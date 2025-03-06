@@ -13,3 +13,8 @@ link要使用@/i18n/navigation.ts 中的Link
 如果增加语言需要
 1. 修改locales.ts 的locales数组
 2. 修改minddleware.ts中的正则
+
+### todo
+iconify
+docker
+黑夜模式
