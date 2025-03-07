@@ -1,6 +1,6 @@
 import { getHello } from '@/api/hello'
 import { getTest } from '@/api/test'
-import { BlogList } from '@/components/blog/BlogList'
+import { BlogList } from '@/components/blog/blog-list'
 import { useTranslations } from 'next-intl'
 import { use } from 'react'
 

@@ -1,4 +1,4 @@
-import { BlogList } from '@/components/blog/BlogList'
+import { BlogList } from '@/components/blog/blog-list'
 
 // 注意：文件路径需要改为 [id]/page.tsx
 export default function BlogPage() {
