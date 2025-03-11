@@ -6,7 +6,6 @@ import { AllProvider } from '@/components/providers/all-provider'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { getMessages } from 'next-intl/server'
-import { cookies } from 'next/headers'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -35,15 +34,10 @@ export default async function RootLayout({
     messages = await getMessages({ locale })
   }
 
-  // 从 cookies 中读取主题
-  const cookieStore = cookies()
-  const themeCookie = cookieStore.get('theme')
-  const initialTheme = themeCookie ? themeCookie.value : 'system'
-
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className="antialiased">
-        <AllProvider messages={messages} initialTheme={initialTheme}>
+        <AllProvider messages={messages}>
           <div>
             <nav className="flex gap-4" aria-label="Main Navigation">
               <span className="icon-[solar--alarm-sleep-broken]"></span>
