@@ -1,6 +1,8 @@
 import { getHello } from '@/api/hello'
 import { getTest } from '@/api/test'
 import { BlogList } from '@/components/blog/blog-list'
+import { Button } from '@/components/ui/button'
+import { Link } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
 import { use } from 'react'
 
@@ -20,6 +22,9 @@ export default function Home() {
       <div>{t('goto about')}</div>
       <div>{JSON.stringify(hello)}</div>
       <div>{JSON.stringify(test)}</div>
+      <Button variant="link" asChild>
+        <Link href="/components">Components</Link>
+      </Button>
       <BlogList />
     </div>
   )

@@ -14,7 +14,10 @@ link要使用@/i18n/navigation.ts 中的Link
 1. 修改locales.ts 的locales数组
 2. 修改minddleware.ts中的正则
 
+---
+iconify 使用的是tailwind4 的插件
+---
+
 ### todo
-iconify
 docker
 黑夜模式

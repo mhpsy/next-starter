@@ -1,22 +1,13 @@
 import type { Metadata } from 'next'
+import type { AbstractIntlMessages } from 'next-intl'
 import LanguageSwitcher from '@/components/common/language-switcher'
+import ThemesSwitcher from '@/components/common/themes-switcher'
+import { AllProvider } from '@/components/providers/all-provider'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
-import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
-import { Geist, Geist_Mono } from 'next/font/google'
-import { notFound } from 'next/navigation'
+import { cookies } from 'next/headers'
 import './globals.css'
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -34,18 +25,25 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>
 }>) {
   const { locale } = await params
+
+  let messages: AbstractIntlMessages
   if (!routing.locales.includes(locale as any)) {
-    notFound()
+    // notFound()
+    messages = await getMessages({ locale: 'en' })
+  }
+  else {
+    messages = await getMessages({ locale })
   }
 
-  const messages = await getMessages()
+  // 从 cookies 中读取主题
+  const cookieStore = cookies()
+  const themeCookie = cookieStore.get('theme')
+  const initialTheme = themeCookie ? themeCookie.value : 'system'
 
   return (
-    <html lang={locale}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <NextIntlClientProvider messages={messages}>
+    <html lang={locale} suppressHydrationWarning>
+      <body className="antialiased">
+        <AllProvider messages={messages} initialTheme={initialTheme}>
           <div>
             <nav className="flex gap-4" aria-label="Main Navigation">
               <span className="icon-[solar--alarm-sleep-broken]"></span>
@@ -53,12 +51,13 @@ export default async function RootLayout({
               <Link href="/about">About</Link>
               <Link href="/blog">Blog</Link>
               <LanguageSwitcher />
+              <ThemesSwitcher />
             </nav>
             <main className="mt-4 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               {children}
             </main>
           </div>
-        </NextIntlClientProvider>
+        </AllProvider>
       </body>
     </html>
   )
