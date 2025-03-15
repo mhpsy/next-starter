@@ -46,5 +46,17 @@
     "scss",
     "pcss",
     "postcss"
+  ],
+  "i18n-ally.localesPaths": [
+    "src/i18n",
+    "src/messages"
+  ],
+  "i18n-ally.extract.ignoredByFiles": {
+    "src/app/[locale]/handle_excel/page.tsx": [
+      "Common"
+    ]
+  },
+  "i18n-ally.extract.ignored": [
+    "Common"
   ]
 }
