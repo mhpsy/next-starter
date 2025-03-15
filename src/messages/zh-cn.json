@@ -2,5 +2,20 @@
   "HomePage": {
     "title": "你好，世界！",
     "goto about": "去关于页面"
+  },
+  "Common": {
+    "selectFile": "选择文件",
+    "upload": "上传",
+    "download": "下载",
+    "cancel": "取消",
+    "confirm": "确认",
+    "merge": "合并",
+    "clear": "清空"
+  },
+  "HandleExcel": {
+    "title": "Excel文件合并工具",
+    "inputMergeColumnName": "输入合并列名",
+    "inputConvertColumnName": "输入转换列名",
+    "mergeResult": "合并结果"
   }
 }

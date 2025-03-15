@@ -2,5 +2,20 @@
   "HomePage": {
     "title": "Hello world!",
     "goto about": "Go to the about page"
+  },
+  "Common": {
+    "selectFile": "Select File",
+    "upload": "Upload",
+    "download": "Download",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "merge": "Merge",
+    "clear": "Clear"
+  },
+  "HandleExcel": {
+    "title": "Excel File Merge Tool",
+    "inputMergeColumnName": "Input Merge Column Name",
+    "inputConvertColumnName": "Input Convert Column Name",
+    "mergeResult": "Merge Result"
   }
 }

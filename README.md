@@ -21,3 +21,8 @@ iconify 使用的是tailwind4 的插件
 ### todo
 docker
 黑夜模式
+
+## docker
+docker build -t nextjs-01 .
+docker run -it -v .:/app -p 4399:3000 nextjs-01
+docker run -it -p 4399:3000 nextjs-01

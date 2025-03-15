@@ -1,5 +1,5 @@
-import { getHello } from '@/api/hello'
-import { getTest } from '@/api/test'
+import { getHello } from '@/app/api/hello'
+import { getTest } from '@/app/api/test'
 import { useTranslations } from 'next-intl'
 import { use } from 'react'
 
