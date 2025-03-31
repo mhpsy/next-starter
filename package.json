@@ -7,7 +7,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "docker:dev": "docker-compose -f docker/docker-compose.dev.yml up --build",
+    "docker:db": "docker-compose -f docker/docker-compose-db-dev.yml up -d",
+    "docker:prod": "docker-compose -f docker/docker-compose.prod.yml build",
+    "docker:logs": "docker-compose -f docker/docker-compose.dev.yml logs -f"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

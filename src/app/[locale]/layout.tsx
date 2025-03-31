@@ -37,7 +37,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning>
         <AllProvider messages={messages}>
 
           <nav className="flex gap-4 justify-between m-4" aria-label="Main Navigation">
