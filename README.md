@@ -19,10 +19,14 @@ iconify 使用的是tailwind4 的插件
 ---
 
 ### todo
-docker
-黑夜模式
+vitest 测试用例
+prisma: seed
 
 ## docker
-docker build -t nextjs-01 .
-docker run -it -v .:/app -p 4399:3000 nextjs-01
-docker run -it -p 4399:3000 nextjs-01
+
+很完善的 docker 支持
+
+## prisma
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"

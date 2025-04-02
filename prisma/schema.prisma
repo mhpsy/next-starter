@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id         Int      @id @default(autoincrement())
+  avatar     String?
+  phone      String?
+  username   String
+  email      String   @unique
+  password   String
+  timezone   String   @default("Asia/Shanghai")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user_role user_role[]
+}
+
+model role {
+  id               Int      @id @default(autoincrement())
+  role_name        String
+  role_description String
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  user_role user_role[]
+
+  role_permission role_permission[]
+}
+
+model user_role {
+  user    user @relation(fields: [user_id], references: [id])
+  user_id Int
+  role    role @relation(fields: [role_id], references: [id])
+  role_id Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@id([user_id, role_id])
+}
+
+model permission {
+  id                     Int      @id @default(autoincrement())
+  permission_name        String
+  permission_description String
+  resource_name          String
+  resource_description   String
+  action_name            String
+  action_description     String
+  created_at             DateTime @default(now())
+  updated_at             DateTime @updatedAt
+
+  role_permission role_permission[]
+}
+
+model role_permission {
+  role          role       @relation(fields: [role_id], references: [id])
+  role_id       Int
+  permission    permission @relation(fields: [permission_id], references: [id])
+  permission_id Int
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+
+  @@id([role_id, permission_id])
+}
