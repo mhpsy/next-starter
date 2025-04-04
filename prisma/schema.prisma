@@ -13,65 +13,268 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id         Int      @id @default(autoincrement())
-  avatar     String?
-  phone      String?
-  username   String
-  email      String   @unique
-  password   String
-  timezone   String   @default("Asia/Shanghai")
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+model admin_department {
+  department_id   Int     @id @default(autoincrement())
+  /// parent department id
+  parent_id       Int?
+  /// department name
+  department_name String
+  /// department order number
+  order_num       Int     @default(0)
+  /// department leader
+  leader          String?
+  /// department phone
+  phone           String?
+  /// department email
+  email           String?
 
-  user_role user_role[]
+  /// sort eg:1
+  sort            Int      @default(0)
+  /// status 0: normal 1: disabled
+  status          Int      @default(0)
+  /// delete_flag 0: normal 1: deleted
+  delete_flag     Int      @default(0)
+  created_by_id   Int?
+  created_by_name String?
+  updated_by_id   Int?
+  updated_by_name String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt()
+
+  remark String?
+
+  /// department users
+  user            admin_user[]
+  role_department admin_role_department[]
 }
 
-model role {
-  id               Int      @id @default(autoincrement())
+/// user
+model admin_user {
+  user_id  Int    @id @default(autoincrement())
+  /// user avatar
+  avatar   String @default("")
+  /// user phone
+  phone    String @default("")
+  /// user username
+  username String
+  /// user email
+  email    String @unique
+  /// user password
+  password String
+  /// user timezone
+  timezone String @default("UTC")
+
+  /// user type 0: admin 1: user 2: guest
+  user_type Int @default(1)
+
+  /// user department id
+  department_id Int?
+  /// user department
+  department    admin_department? @relation(fields: [department_id], references: [department_id])
+
+  /// user last login ip
+  login_ip String?
+  /// user last login time
+  login_at DateTime?
+
+  /// sort eg:1
+  sort            Int      @default(0)
+  /// status 0: normal 1: disabled
+  status          Int      @default(0)
+  /// delete_flag 0: normal 1: deleted
+  delete_flag     Int      @default(0)
+  created_by_id   Int?
+  created_by_name String?
+  updated_by_id   Int?
+  updated_by_name String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt()
+
+  remark String?
+
+  user_role admin_user_role[]
+  user_post admin_user_post[]
+}
+
+/// role
+model admin_role {
+  role_id          Int    @id @default(autoincrement())
   role_name        String
+  /// role description
   role_description String
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
+  /// role created at
 
-  user_role user_role[]
+  /// data scope 0: all 1: self 2: self department 3: self department and children departments 4: custom department
+  data_scope Int @default(0)
 
-  role_permission role_permission[]
+  /// sort eg:1
+  sort            Int      @default(0)
+  /// status 0: normal 1: disabled
+  status          Int      @default(0)
+  /// delete_flag 0: normal 1: deleted
+  delete_flag     Int      @default(0)
+  created_by_id   Int?
+  created_by_name String?
+  updated_by_id   Int?
+  updated_by_name String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt()
+
+  remark String?
+
+  user_role       admin_user_role[]
+  role_permission admin_role_permission[]
+  role_department admin_role_department[]
 }
 
-model user_role {
-  user    user @relation(fields: [user_id], references: [id])
+/// user role relation
+model admin_user_role {
+  user    admin_user @relation(fields: [user_id], references: [user_id])
   user_id Int
-  role    role @relation(fields: [role_id], references: [id])
+  /// role id
+  role    admin_role @relation(fields: [role_id], references: [role_id])
   role_id Int
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
 
   @@id([user_id, role_id])
 }
 
-model permission {
-  id                     Int      @id @default(autoincrement())
+/// permission, this is ui permission
+model admin_permission {
+  /// permission id
+  permission_id          Int     @id @default(autoincrement())
+  /// permission name (e.g. create user)
   permission_name        String
-  permission_description String
-  resource_name          String
-  resource_description   String
-  action_name            String
-  action_description     String
-  created_at             DateTime @default(now())
-  updated_at             DateTime @updatedAt
+  /// permission description (e.g. create user)
+  permission_description String?
 
-  role_permission role_permission[]
+  /// parent permission id
+  parent_id Int?
+
+  /// url path
+  url_path        String  @default("")
+  /// open type 0: normal 1: external link 2: internal link
+  open_type       Int     @default(0)
+  /// icon
+  icon            String  @default("")
+  /// permission type menu,link,button; menu can have children; link and button can not have children
+  permission_type String  @default("menu")
+  /// permission code eg:sys,user,add; Each part stores only its own code, which is eventually combined into a complete code; 
+  permission_code String  @default("")
+  /// extend_parent, if true, the permission will be extended to the parent permission; eg menu:sys , link:user , button:add , and button is sys:user:add 
+  extend_parent   Boolean @default(true)
+
+  /// sort eg:1
+  sort            Int      @default(0)
+  /// status 0: normal 1: disabled
+  status          Int      @default(0)
+  /// delete_flag 0: normal 1: deleted
+  delete_flag     Int      @default(0)
+  created_by_id   Int?
+  created_by_name String?
+  updated_by_id   Int?
+  updated_by_name String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt()
+
+  remark String?
+
+  role_permission admin_role_permission[]
+  ui_api_permission admin_ui_api_permission[]
 }
 
-model role_permission {
-  role          role       @relation(fields: [role_id], references: [id])
-  role_id       Int
-  permission    permission @relation(fields: [permission_id], references: [id])
+/// api permission, this is api permission ,related to permission(ui permission), developer can set api permission for permission
+model admin_api_permission {
+  api_permission_id          Int     @id @default(autoincrement())
+  api_permission_name        String
+  api_permission_description String?
+  /// api permission path eg:/api/user/list
+  api_permission_path        String
+  /// api permission method eg:GET,POST,PUT,DELETE
+  api_permission_method      String
+  /// api permission status 0: normal 1: disabled
+
+  /// dont relate to ui permission, developer can set token for api permission
+  token String?
+
+  /// sort eg:1
+  sort            Int      @default(0)
+  /// status 0: normal 1: disabled
+  status          Int      @default(0)
+  /// delete_flag 0: normal 1: deleted
+  delete_flag     Int      @default(0)
+  created_by_id   Int?
+  created_by_name String?
+  updated_by_id   Int?
+  updated_by_name String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt()
+
+  ui_api_permission admin_ui_api_permission[]
+}
+
+model admin_ui_api_permission {
+  permission    admin_permission @relation(fields: [permission_id], references: [permission_id])
   permission_id Int
-  created_at    DateTime   @default(now())
-  updated_at    DateTime   @updatedAt
+  api_permission admin_api_permission @relation(fields: [api_permission_id], references: [api_permission_id])
+  api_permission_id Int
+
+  @@id([permission_id, api_permission_id])
+}
+
+/// role permission relation
+model admin_role_permission {
+  role          admin_role       @relation(fields: [role_id], references: [role_id])
+  role_id       Int
+  permission    admin_permission @relation(fields: [permission_id], references: [permission_id])
+  permission_id Int
 
   @@id([role_id, permission_id])
+}
+
+/// user post
+model admin_post {
+  post_id    Int    @id @default(autoincrement())
+  /// post code eg:HR,CEP
+  post_code  String
+  /// post color eg:#000000
+  post_color String
+  /// post name eg:Human Resources
+  post_name  String
+
+  /// sort eg:1
+  sort            Int      @default(0)
+  /// status 0: normal 1: disabled
+  status          Int      @default(0)
+  /// delete_flag 0: normal 1: deleted
+  delete_flag     Int      @default(0)
+  created_by_id   Int?
+  created_by_name String?
+  updated_by_id   Int?
+  updated_by_name String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt()
+
+  remark String?
+
+  user_post admin_user_post[]
+}
+
+/// user post relation
+model admin_user_post {
+  user    admin_user @relation(fields: [user_id], references: [user_id])
+  user_id Int
+  post    admin_post @relation(fields: [post_id], references: [post_id])
+  post_id Int
+
+  @@id([user_id, post_id])
+}
+
+/// only role type 4 use this table to set department, custom department data scope
+model admin_role_department {
+  role          admin_role       @relation(fields: [role_id], references: [role_id])
+  role_id       Int
+  department    admin_department @relation(fields: [department_id], references: [department_id])
+  department_id Int
+
+  @@id([role_id, department_id])
 }

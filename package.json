@@ -16,6 +16,9 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@prisma/client": "6.5.0",

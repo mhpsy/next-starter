@@ -21,6 +21,7 @@ iconify 使用的是tailwind4 的插件
 ### todo
 vitest 测试用例
 prisma: seed
+引入日志库
 
 ## docker
 
