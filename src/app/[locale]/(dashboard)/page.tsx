@@ -1,5 +1,5 @@
+import { Link } from '@/components/common/link'
 import { Button } from '@/components/ui/button'
-import { Link } from '@/i18n/navigation'
 
 export default function Home() {
   return (

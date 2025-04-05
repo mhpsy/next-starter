@@ -3,7 +3,7 @@
 import { mergeExcelFiles } from '@/app/api/handle_excel'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Link } from '@/i18n/navigation'
+import { Link } from '@/components/common/link'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 

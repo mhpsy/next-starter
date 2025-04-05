@@ -50,7 +50,7 @@ export default function LanguageSwitcher() {
   return (
     <div className="relative">
       <Select onValueChange={switchLanguage} value={currentLocale}>
-        <SelectTrigger>
+        <SelectTrigger className="w-26">
           <SelectValue>
             <div className="flex items-center">
               <span>{languageMap[currentLocale as keyof typeof languageMap]}</span>

@@ -1,4 +1,5 @@
 import type { AbstractIntlMessages } from 'next-intl'
+import { ProgressBar, ProgressBarProvider } from '@/components/common/progress'
 import { NextIntlClientProvider } from 'next-intl'
 import { ThemeProvider } from './theme-provider'
 
@@ -17,7 +18,10 @@ export function AllProvider({
       disableTransitionOnChange
     >
       <NextIntlClientProvider messages={messages}>
-        {children}
+        <ProgressBarProvider>
+          <ProgressBar className="fixed h-1 z-10 shadow-lg shadow-sky-500/20 bg-gray-500 top-0" />
+          {children}
+        </ProgressBarProvider>
       </NextIntlClientProvider>
     </ThemeProvider>
   )

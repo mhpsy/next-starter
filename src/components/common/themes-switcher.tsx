@@ -76,11 +76,8 @@ export default function ThemesSwitcher() {
     <div className="relative">
       <Select onValueChange={switchTheme} value={currentTheme.value}>
         <SelectTrigger>
-          <SelectValue>
-            <div className="flex items-center">
-              <CurrentIcon className="h-5 w-5" />
-              {/* <span className="ml-2">{currentTheme.name}</span> */}
-            </div>
+          <SelectValue asChild>
+            <CurrentIcon className="h-5 w-5" />
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
