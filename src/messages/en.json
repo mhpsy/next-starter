@@ -10,7 +10,10 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "merge": "Merge",
-    "clear": "Clear"
+    "clear": "Clear",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
   },
   "HandleExcel": {
     "title": "Excel File Merge Tool",

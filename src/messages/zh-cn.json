@@ -10,7 +10,10 @@
     "cancel": "取消",
     "confirm": "确认",
     "merge": "合并",
-    "clear": "清空"
+    "clear": "清空",
+    "system": "系统",
+    "light": "浅色",
+    "dark": "深色"
   },
   "HandleExcel": {
     "title": "Excel文件合并工具",

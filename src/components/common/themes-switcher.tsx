@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/react/24/outline'
+import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 
@@ -17,35 +18,51 @@ interface Theme {
   icon: React.ElementType
 }
 
-const themeList: Theme[] = [
-  {
-    name: '浅色',
-    value: 'light',
-    icon: SunIcon,
-  },
-  {
-    name: '深色',
-    value: 'dark',
-    icon: MoonIcon,
-  },
-  {
-    name: '系统',
-    value: 'system',
-    icon: ComputerDesktopIcon,
-  },
-]
-
 export default function ThemesSwitcher() {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
+
+  const tc = useTranslations('Common')
+
+  const themeList: Theme[] = [
+    {
+      name: tc('light'),
+      value: 'light',
+      icon: SunIcon,
+    },
+    {
+      name: tc('dark'),
+      value: 'dark',
+      icon: MoonIcon,
+    },
+    {
+      name: tc('system'),
+      value: 'system',
+      icon: ComputerDesktopIcon,
+    },
+  ]
 
   // 在组件挂载后再渲染，避免水合不匹配
   useEffect(() => {
     setMounted(true)
   }, [])
 
+  const Icon = ComputerDesktopIcon
+
   if (!mounted) {
-    return null
+    return (
+      <div className="relative">
+        <Select disabled value="system">
+          <SelectTrigger>
+            <SelectValue>
+              <div className="flex items-center">
+                <Icon className="h-5 w-5" />
+              </div>
+            </SelectValue>
+          </SelectTrigger>
+        </Select>
+      </div>
+    )
   }
 
   const currentTheme = themeList.find(t => t.value === theme) || themeList[0]
@@ -62,7 +79,7 @@ export default function ThemesSwitcher() {
           <SelectValue>
             <div className="flex items-center">
               <CurrentIcon className="h-5 w-5" />
-              <span className="ml-2">{currentTheme.name}</span>
+              {/* <span className="ml-2">{currentTheme.name}</span> */}
             </div>
           </SelectValue>
         </SelectTrigger>

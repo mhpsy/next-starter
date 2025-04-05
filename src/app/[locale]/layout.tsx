@@ -39,39 +39,7 @@ export default async function RootLayout({
     <html lang={locale} suppressHydrationWarning>
       <body className="antialiased" suppressHydrationWarning>
         <AllProvider messages={messages}>
-
-          <nav className="flex gap-4 justify-between m-4" aria-label="Main Navigation">
-            <div className="w-full flex items-center gap-4">
-              <Button variant="link" asChild>
-                <Link href="/" className="text-2xl">
-                  <span className="icon-[ic--baseline-home]"></span>
-                  {' '}
-                  Home
-                </Link>
-              </Button>
-              <Button variant="link" asChild>
-                <Link href="/about" className="text-2xl">
-                  <span className="icon-[ic--baseline-calendar-today]"></span>
-                  {' '}
-                  About
-                </Link>
-              </Button>
-              <Button variant="link" asChild>
-                <Link href="/blog" className="text-2xl">
-                  <span className="icon-[ic--baseline-newspaper]"></span>
-                  {' '}
-                  Blog
-                </Link>
-              </Button>
-            </div>
-            <div className="flex gap-4">
-              <LanguageSwitcher />
-              <ThemesSwitcher />
-            </div>
-          </nav>
-          <main className="mt-4 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {children}
-          </main>
+          {children}
         </AllProvider>
       </body>
     </html>
