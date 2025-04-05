@@ -1,23 +1,25 @@
 services:
-  next:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.dev
-    ports:
-      - "3000:3000"
-    volumes:
-      - ..:/app
-      # - /app/node_modules
-      # - /app/.next
-    environment:
-      - NODE_ENV=development
-    command: pnpm dev
-    container_name: next-dev 
-    depends_on:
-      - postgres
-      - redis
-    networks:
-      - my_network
+  # next:
+  #   build:
+  #     context: ..
+  #     dockerfile: docker/Dockerfile.dev
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ..:/app
+  #     # - /app/node_modules
+  #     # - /app/.next
+  #   environment:
+  #     - NODE_ENV=development
+  #     - WATCHPACK_POLLING=true
+  #     - CHOKIDAR_USEPOLLING=true
+  #   # command: pnpm dev
+  #   container_name: next-dev 
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   networks:
+  #     - my_network
 
   postgres:
     image: postgres:17.4

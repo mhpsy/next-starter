@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "docker:dev": "docker-compose -f docker/docker-compose.dev.yml up --build",
+    "docker:dev": "docker-compose -f docker/docker-compose.dev.yml up --build -d",
     "docker:db": "docker-compose -f docker/docker-compose-db-dev.yml up -d",
     "docker:prod": "docker-compose -f docker/docker-compose.prod.yml build",
     "docker:logs": "docker-compose -f docker/docker-compose.dev.yml logs -f",
