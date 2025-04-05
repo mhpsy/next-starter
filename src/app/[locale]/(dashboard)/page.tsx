@@ -11,7 +11,7 @@ export default function Home() {
         <Link href="/login">Login</Link>
       </Button>
       <Button variant="link" asChild>
-        <Link href="/register">Register</Link>
+        <Link href="/signup">Signup</Link>
       </Button>
     </div>
   )

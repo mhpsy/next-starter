@@ -33,8 +33,9 @@ export function Link({ ref, href, children, replace, scroll, ...rest }: Paramete
       ref={ref}
       href={href}
       onClick={(e) => {
-        if (isModifiedEvent(e))
+        if (isModifiedEvent(e)) {
           return
+        }
         e.preventDefault()
         startTransition(() => {
           startProgress()

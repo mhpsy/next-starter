@@ -1,7 +1,7 @@
 import LanguageSwitcher from '@/components/common/language-switcher'
+import { Link } from '@/components/common/link'
 import ThemesSwitcher from '@/components/common/themes-switcher'
 import { Button } from '@/components/ui/button'
-import { Link } from '@/components/common/link'
 
 export default function DashboardLayout({
   children,

@@ -88,25 +88,29 @@ export function formatUrl(urlObj: {
 
   let search = urlObj.search || (query && `?${query}`) || ''
 
-  if (protocol && !protocol.endsWith(':'))
+  if (protocol && !protocol.endsWith(':')) {
     protocol += ':'
+  }
 
   if (
     urlObj.slashes
     || ((!protocol || slashedProtocols.test(protocol)) && host !== false)
   ) {
     host = `//${host || ''}`
-    if (pathname && pathname[0] !== '/')
+    if (pathname && pathname[0] !== '/') {
       pathname = `/${pathname}`
+    }
   }
   else if (!host) {
     host = ''
   }
 
-  if (hash && hash[0] !== '#')
+  if (hash && hash[0] !== '#') {
     hash = `#${hash}`
-  if (search && search[0] !== '?')
+  }
+  if (search && search[0] !== '?') {
     search = `?${search}`
+  }
 
   pathname = pathname.replace(/[?#]/g, encodeURIComponent)
   search = search.replace('#', '%23')

@@ -1,4 +1,4 @@
-import { useInterval } from '@/hooks/useInterval'
+import { useInterval } from '@/hooks/use-interval'
 import {
   useSpring,
 } from 'framer-motion'
