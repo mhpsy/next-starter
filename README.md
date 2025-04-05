@@ -22,6 +22,8 @@ iconify 使用的是tailwind4 的插件
 vitest 测试用例
 prisma: seed
 引入日志库
+swr全局封装
+useForm
 
 ## docker
 

@@ -8,6 +8,7 @@ import { CardContent, CardDescription, CardHeader, CardTitle } from '@/component
 import {
   Form,
 } from '@/components/ui/form'
+import { signup } from '@/server/api/auth/signup'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
@@ -23,11 +24,17 @@ export default function RegisterPage() {
     password: z.string()
       .min(10, { message: t('passwordTooShort', { min: 10 }) })
       .max(50, { message: t('passwordTooLong', { max: 50 }) })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/, { message: t('passwordTooWeak') }),
+      .regex(/(?=.*[A-Z])/, { message: t('passwordMustHaveUppercase') })
+      .regex(/(?=.*[a-z])/, { message: t('passwordMustHaveLowercase') })
+      .regex(/(?=.*\d)/, { message: t('passwordMustHaveNumber') })
+      .regex(/(?=.*[@$!%*?&])/, { message: t('passwordMustHaveSpecialCharacter') }),
     confirmPassword: z.string()
       .min(10, { message: t('passwordTooShort', { min: 10 }) })
       .max(50, { message: t('passwordTooLong', { max: 50 }) })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/, { message: t('passwordTooWeak') }),
+      .regex(/(?=.*[A-Z])/, { message: t('passwordMustHaveUppercase') })
+      .regex(/(?=.*[a-z])/, { message: t('passwordMustHaveLowercase') })
+      .regex(/(?=.*\d)/, { message: t('passwordMustHaveNumber') })
+      .regex(/(?=.*[@$!%*?&])/, { message: t('passwordMustHaveSpecialCharacter') }),
     acceptTerms: z.boolean().refine(data => data, { message: t('acceptTerms') }),
   }).refine(data => data.password === data.confirmPassword, {
     message: t('passwordsDoNotMatch'),
@@ -47,8 +54,11 @@ export default function RegisterPage() {
     },
   })
 
-  function onSubmit(data: FormoSchema) {
+  async function onSubmit(data: FormoSchema) {
+    console.warn(form)
     console.warn(data)
+    const res = await signup(data)
+    console.warn(res)
   }
 
   return (

@@ -59,6 +59,10 @@
     "signInFailed": "Sign in failed",
     "signInFailedMessage": "Please check your email address and password",
     "signInSuccessMessage": "Sign in successfully",
-    "createAccount": "Create an account"
+    "createAccount": "Create an account",
+    "passwordMustHaveUppercase": "Password must have at least one uppercase letter",
+    "passwordMustHaveLowercase": "Password must have at least one lowercase letter",
+    "passwordMustHaveNumber": "Password must have at least one number",
+    "passwordMustHaveSpecialCharacter": "Password must have at least one special character"
   }
 }
