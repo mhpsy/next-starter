@@ -48,6 +48,17 @@
     "passwordTooWeak": "密码必须至少包含一个大写字母，一个小写字母，一个号码和一个特殊字符",
     "acceptTerms": "我接受条款和条件",
     "usernameDescription": "这是您的公共显示名称。",
-    "createAccount": "Create New Account"
+    "createAccount": "Create New Account",
+    "acceptTermsLabel": "我接受条款和条件",
+    "confirmPasswordDescription": "请确认您的密码。",
+    "emailDescription": "这是您的登录电子邮件地址。",
+    "signInFailed": "登录失败",
+    "signInFailedMessage": "请检查您的电子邮件地址和密码",
+    "signInSuccess": "成功登录",
+    "signInSuccessMessage": "成功登录",
+    "signInToYourAccount": "登录您的帐户",
+    "toSignIn": "登录",
+    "toSignUp": "注册",
+    "usernamePlaceholder": "输入您的用户名"
   }
 }

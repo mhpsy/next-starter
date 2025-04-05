@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
+
 @tailwind utilities;
+
 @plugin "@iconify/tailwind4";
 
 @plugin "tailwindcss-animate";
@@ -121,6 +123,7 @@ html.dark {
     from {
       height: 0;
     }
+
     to {
       height: var(--radix-accordion-content-height);
     }
@@ -130,6 +133,7 @@ html.dark {
     from {
       height: var(--radix-accordion-content-height);
     }
+
     to {
       height: 0;
     }
@@ -151,7 +155,17 @@ html.dark {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  /*
+  fixed button cursor pointer 
+  https://github.com/shadcn-ui/ui/issues/6843
+  */
+  button:not([disabled]),
+  [role="button"]:not([disabled]) {
+    cursor: pointer;
   }
 }
