@@ -23,10 +23,22 @@ function log(message: string, ...args: any[]) {
   })
 }
 
+log.error = function (message: string, ...args: any[]) {
+  logger.error(message, ...args)
+}
+
+log.info = function (message: string, ...args: any[]) {
+  logger.info(message, ...args)
+}
+
+log.warn = function (message: string, ...args: any[]) {
+  logger.warn(message, ...args)
+}
+
+log.debug = function (message: string, ...args: any[]) {
+  logger.debug(message, ...args)
+}
+
 export {
-  debug,
-  error,
-  info,
   log,
-  warn,
 }

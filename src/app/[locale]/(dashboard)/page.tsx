@@ -11,9 +11,6 @@ export default function Home() {
       <Button variant="link" asChild>
         <Link href="/signup">Signup</Link>
       </Button>
-      <Button variant="link" asChild>
-        <Link href="/user-example">User Example</Link>
-      </Button>
       <SignButton />
     </div>
   )

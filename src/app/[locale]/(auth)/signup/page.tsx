@@ -44,7 +44,7 @@ export default function RegisterPage() {
     console.warn(data)
     const result = await trigger(data)
     console.warn(result)
-    if (result?.success) {
+    if (result?.ok) {
       toast.success(t('signupSuccess'))
     }
     else if (result?.error) {

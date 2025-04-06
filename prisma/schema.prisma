@@ -56,7 +56,7 @@ model admin_user {
   /// user phone
   phone    String @default("")
   /// user username
-  username String
+  username String @unique
   /// user email
   email    String @unique
   /// user password

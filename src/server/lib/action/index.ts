@@ -1,3 +1,5 @@
+import { log } from '@/server/lib/log'
+
 interface ResOption {
   message?: string
   errorMessage?: string
@@ -34,7 +36,7 @@ export async function CreateServerActionResponese<T>(
     }
   }
   catch (error) {
-    console.error('[API Error]', error)
+    log.error('[API Error]', error)
     return {
       ok: false,
       message: errorMessage || 'error',
