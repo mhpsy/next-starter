@@ -1,9 +1,9 @@
-import env from '@/server/env'
 import { createClient } from 'redis'
+import '@/server/env/index'
 
 const redis = createClient({
-  url: `redis://${env.REDIS_HOST}:${env.REDIS_PORT}`,
-  password: env.REDIS_PASSWORD,
+  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  password: process.env.REDIS_PASSWORD,
 })
 
 redis.connect()

@@ -8,4 +8,4 @@ function redisGet(key: string) {
   return redis.get(key)
 }
 
-export { redisGet, redisSet }
+export { redis, redisGet, redisSet }

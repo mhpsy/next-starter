@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest",
     "docker:dev": "docker-compose -f docker/docker-compose.dev.yml up --build -d",
     "docker:db": "docker-compose -f docker/docker-compose-db-dev.yml up -d",
     "docker:prod": "docker-compose -f docker/docker-compose.prod.yml build",
@@ -22,6 +23,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^5.0.1",
+    "@next/env": "^15.2.4",
     "@prisma/client": "6.5.0",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-alert-dialog": "^1.1.6",
@@ -88,9 +90,12 @@
     "@iconify/tailwind4": "^1.0.6",
     "@next/eslint-plugin-next": "^15.0.3",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.21.0",
     "eslint-config-next": "15.2.1",
     "eslint-plugin-format": "^0.1.3",
@@ -101,8 +106,11 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "eslint-plugin-tailwindcss": "^3.18.0",
     "eslint-plugin-testing-library": "^7.1.0",
+    "jsdom": "^26.0.0",
     "postcss": "^8",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.1.1"
   }
 }

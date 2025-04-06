@@ -52,6 +52,7 @@ export default antfu(
     rules: {
       'unused-imports/no-unused-vars': 'off',
       'react-refresh/only-export-components': 'off',
+      'n/prefer-global/process': 'off',
     },
   },
 )
