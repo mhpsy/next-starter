@@ -8,20 +8,22 @@ import {
   Form,
 } from '@/components/ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export default function LoginPage() {
   const t = useTranslations('Auth')
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
   const formSchema = z.object({
-    username: z.string()
-      .min(5, { message: t('usernameTooShort', { min: 5 }) })
-      .max(50, { message: t('usernameTooLong', { max: 50 }) }),
-    password: z.string()
-      .min(10, { message: t('passwordTooShort', { min: 10 }) })
-      .max(50, { message: t('passwordTooLong', { max: 50 }) })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/, { message: t('passwordTooWeak') }),
+    username: z.string().min(1, { message: t('usernameRequired') }),
+    password: z.string().min(1, { message: t('passwordRequired') }),
   })
 
   type FormoSchema = z.infer<typeof formSchema>
@@ -34,8 +36,33 @@ export default function LoginPage() {
     },
   })
 
-  function onSubmit(data: FormoSchema) {
-    console.warn(data)
+  async function onSubmit(data: FormoSchema) {
+    try {
+      setLoading(true)
+      setError(null)
+
+      const result = await signIn('credentials', {
+        username: data.username,
+        password: data.password,
+        redirect: false,
+      })
+
+      if (result?.error) {
+        setError(result.error || t('loginFailed'))
+        console.error('登录失败:', result.error)
+      }
+      else {
+        // 登录成功，跳转到主页或其他页面
+        router.push('/dashboard')
+      }
+    }
+    catch (error) {
+      setError(t('loginError'))
+      console.error('登录过程中出错:', error)
+    }
+    finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -49,6 +76,11 @@ export default function LoginPage() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <span className="block sm:inline">{error}</span>
+              </div>
+            )}
             <FormInput
               control={form.control}
               name="username"
@@ -65,8 +97,9 @@ export default function LoginPage() {
             <Button
               type="submit"
               className="w-full transition-all py-2 text-base font-medium hover:shadow-md"
+              disabled={loading}
             >
-              {t('logIn')}
+              {loading ? t('loggingIn') : t('logIn')}
             </Button>
             <div className="text-center mt-4">
               <p className="text-sm text-muted-foreground">

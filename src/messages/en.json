@@ -63,6 +63,9 @@
     "passwordMustHaveUppercase": "Password must have at least one uppercase letter",
     "passwordMustHaveLowercase": "Password must have at least one lowercase letter",
     "passwordMustHaveNumber": "Password must have at least one number",
-    "passwordMustHaveSpecialCharacter": "Password must have at least one special character"
+    "passwordMustHaveSpecialCharacter": "Password must have at least one special character",
+    "formFilledForDebug": "debug use",
+    "fillForm": "debug use fill form",
+    "signing": "signing up~"
   }
 }

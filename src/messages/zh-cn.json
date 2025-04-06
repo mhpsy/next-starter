@@ -59,6 +59,13 @@
     "signInToYourAccount": "登录您的帐户",
     "toSignIn": "登录",
     "toSignUp": "注册",
-    "usernamePlaceholder": "输入您的用户名"
+    "usernamePlaceholder": "输入您的用户名",
+    "passwordMustHaveLowercase": "密码必须至少有一个小写字母",
+    "passwordMustHaveNumber": "密码必须至少有一个数字",
+    "passwordMustHaveSpecialCharacter": "密码必须至少具有一个特殊字符",
+    "passwordMustHaveUppercase": "密码必须至少有一个大写字母",
+    "formFilledForDebug": "调试使用",
+    "fillForm": "调试使用填充表格",
+    "signing": "注册中~"
   }
 }

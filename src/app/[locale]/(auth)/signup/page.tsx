@@ -1,5 +1,6 @@
 'use client'
 
+import type { SignupSchema } from '@/lib/schemes/signup'
 import { Link } from '@/components/common/link'
 import { FormCheckbox } from '@/components/from/form-checkbox'
 import { FormInput } from '@/components/from/form-input'
@@ -8,42 +9,20 @@ import { CardContent, CardDescription, CardHeader, CardTitle } from '@/component
 import {
   Form,
 } from '@/components/ui/form'
+import { SWR_KEY } from '@/constants/swr-key'
+import { signupSchema } from '@/lib/schemes/signup'
 import { signup } from '@/server/api/auth/signup'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { toast } from 'sonner'
+import useSWRMutation from 'swr/mutation'
 
 export default function RegisterPage() {
   const t = useTranslations('Auth')
-  const formSchema = z.object({
-    username: z.string()
-      .min(5, { message: t('usernameTooShort', { min: 5 }) })
-      .max(50, { message: t('usernameTooLong', { max: 50 }) }),
-    email: z.string().email({ message: t('invalidEmail') }),
-    password: z.string()
-      .min(10, { message: t('passwordTooShort', { min: 10 }) })
-      .max(50, { message: t('passwordTooLong', { max: 50 }) })
-      .regex(/(?=.*[A-Z])/, { message: t('passwordMustHaveUppercase') })
-      .regex(/(?=.*[a-z])/, { message: t('passwordMustHaveLowercase') })
-      .regex(/(?=.*\d)/, { message: t('passwordMustHaveNumber') })
-      .regex(/(?=.*[@$!%*?&])/, { message: t('passwordMustHaveSpecialCharacter') }),
-    confirmPassword: z.string()
-      .min(10, { message: t('passwordTooShort', { min: 10 }) })
-      .max(50, { message: t('passwordTooLong', { max: 50 }) })
-      .regex(/(?=.*[A-Z])/, { message: t('passwordMustHaveUppercase') })
-      .regex(/(?=.*[a-z])/, { message: t('passwordMustHaveLowercase') })
-      .regex(/(?=.*\d)/, { message: t('passwordMustHaveNumber') })
-      .regex(/(?=.*[@$!%*?&])/, { message: t('passwordMustHaveSpecialCharacter') }),
-    acceptTerms: z.boolean().refine(data => data, { message: t('acceptTerms') }),
-  }).refine(data => data.password === data.confirmPassword, {
-    message: t('passwordsDoNotMatch'),
-    path: ['confirmPassword'],
-  })
+  const formSchema = signupSchema
 
-  type FormoSchema = z.infer<typeof formSchema>
-
-  const form = useForm<FormoSchema>({
+  const form = useForm<SignupSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: '',
@@ -54,11 +33,42 @@ export default function RegisterPage() {
     },
   })
 
-  async function onSubmit(data: FormoSchema) {
-    console.warn(form)
+  const { trigger, isMutating } = useSWRMutation(
+    SWR_KEY.AUTH.SIGNUP,
+    async (_key, { arg }: { arg: SignupSchema }) => {
+      return await signup(arg)
+    },
+  )
+
+  async function onSubmit(data: SignupSchema) {
     console.warn(data)
-    const res = await signup(data)
-    console.warn(res)
+    const result = await trigger(data)
+    console.warn(result)
+    if (result?.success) {
+      toast.success(t('signupSuccess'))
+    }
+    else if (result?.error) {
+      toast.error(`${t('signupError')}: ${result.error}`)
+    }
+  }
+
+  function setValue() {
+    const randomUsername = `user${Math.floor(Math.random() * 10000)}${Date.now().toString().slice(-4)}`
+    const randomEmail = `test${Math.floor(Math.random() * 1000)}@example.com`
+    const randomPassword = `Test${Math.floor(Math.random() * 1000)}@${Math.floor(Math.random() * 10000)}`
+
+    form.setValue('username', randomUsername)
+    form.setValue('email', randomEmail)
+    form.setValue('password', randomPassword)
+    form.setValue('confirmPassword', randomPassword)
+    form.setValue('acceptTerms', true)
+
+    // 触发表单验证
+    Object.keys(form.getValues()).forEach((key) => {
+      form.trigger(key as keyof SignupSchema)
+    })
+
+    toast.success(t('formFilledForDebug'))
   }
 
   return (
@@ -67,6 +77,11 @@ export default function RegisterPage() {
         <CardTitle className="text-2xl font-bold text-center">{t('signUp')}</CardTitle>
         <CardDescription className="text-center">
           {t('createAccount')}
+          {
+            process.env.NODE_ENV === 'development' && (
+              <Button onClick={setValue}>{t('fillForm')}</Button>
+            )
+          }
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -78,6 +93,8 @@ export default function RegisterPage() {
               label={t('username')}
               placeholder={t('usernamePlaceholder')}
               description={t('usernameDescription')}
+              t={t}
+              tv={{ min: 5, max: 50 }}
             />
             <FormInput
               control={form.control}
@@ -86,6 +103,8 @@ export default function RegisterPage() {
               type="email"
               placeholder={t('emailPlaceholder')}
               description={t('emailDescription')}
+              t={t}
+              tv={{ min: 5, max: 50 }}
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormInput
@@ -94,6 +113,8 @@ export default function RegisterPage() {
                 label={t('password')}
                 type="password"
                 placeholder="••••••••••"
+                t={t}
+                tv={{ min: 10, max: 50 }}
               />
               <FormInput
                 control={form.control}
@@ -101,18 +122,22 @@ export default function RegisterPage() {
                 label={t('confirmPassword')}
                 type="password"
                 placeholder="••••••••••"
+                t={t}
+                tv={{ min: 10, max: 50 }}
               />
             </div>
             <FormCheckbox
               control={form.control}
               name="acceptTerms"
               label={t('acceptTermsLabel')}
+              t={t}
             />
             <Button
               type="submit"
               className="w-full transition-all py-2 text-base font-medium hover:shadow-md"
+              disabled={isMutating}
             >
-              {t('signUp')}
+              {isMutating ? t('signing') : t('signUp')}
             </Button>
             <div className="text-center mt-4">
               <p className="text-sm text-muted-foreground">

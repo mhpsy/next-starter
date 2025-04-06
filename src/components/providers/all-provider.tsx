@@ -1,5 +1,6 @@
 import type { AbstractIntlMessages } from 'next-intl'
 import { ProgressBar, ProgressBarProvider } from '@/components/common/progress'
+import { Toaster } from '@/components/ui/sonner'
 import { NextIntlClientProvider } from 'next-intl'
 import { ThemeProvider } from './theme-provider'
 
@@ -20,6 +21,7 @@ export function AllProvider({
       <NextIntlClientProvider messages={messages}>
         <ProgressBarProvider>
           <ProgressBar className="fixed h-1 z-10 shadow-lg shadow-sky-500/20 bg-gray-500 top-0" />
+          <Toaster />
           {children}
         </ProgressBarProvider>
       </NextIntlClientProvider>

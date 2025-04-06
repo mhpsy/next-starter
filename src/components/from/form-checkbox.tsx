@@ -1,5 +1,6 @@
 'use client'
 
+import type { useTranslations } from 'next-intl'
 import type { FieldValues, Path } from 'react-hook-form'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -15,6 +16,8 @@ interface FormCheckboxProps<T extends FieldValues> {
   name: Path<T>
   label: string
   className?: string
+  t?: ReturnType<typeof useTranslations>
+  tv?: any
 }
 
 export function FormCheckbox<T extends FieldValues>({
@@ -22,6 +25,8 @@ export function FormCheckbox<T extends FieldValues>({
   name,
   label,
   className,
+  t,
+  tv = undefined,
 }: FormCheckboxProps<T>) {
   return (
     <FormField
@@ -58,7 +63,7 @@ export function FormCheckbox<T extends FieldValues>({
               </FormLabel>
             </div>
           </div>
-          <FormMessage className="text-sm font-medium text-red-500" />
+          <FormMessage t={t} tv={tv} className="text-sm font-medium text-red-500" />
         </FormItem>
       )}
     />

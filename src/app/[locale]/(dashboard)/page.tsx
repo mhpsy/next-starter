@@ -1,5 +1,6 @@
 import { Link } from '@/components/common/link'
 import { Button } from '@/components/ui/button'
+import { SignButton } from './sign-button'
 
 export default function Home() {
   return (
@@ -10,6 +11,10 @@ export default function Home() {
       <Button variant="link" asChild>
         <Link href="/signup">Signup</Link>
       </Button>
+      <Button variant="link" asChild>
+        <Link href="/user-example">User Example</Link>
+      </Button>
+      <SignButton />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import type { useTranslations } from 'next-intl'
 import type { FieldValues, Path } from 'react-hook-form'
 import {
   FormControl,
@@ -19,6 +20,8 @@ interface FormInputProps<T extends FieldValues> {
   description?: string
   type?: string
   className?: string
+  t?: ReturnType<typeof useTranslations>
+  tv?: any
 }
 
 export function FormInput<T extends FieldValues>({
@@ -29,6 +32,8 @@ export function FormInput<T extends FieldValues>({
   description,
   type = 'text',
   className,
+  t,
+  tv = undefined,
 }: FormInputProps<T>) {
   return (
     <FormField
@@ -50,7 +55,7 @@ export function FormInput<T extends FieldValues>({
               {description}
             </FormDescription>
           )}
-          <FormMessage className="text-sm font-medium text-red-500" />
+          <FormMessage className="text-sm font-medium text-red-500" t={t} tv={tv} />
         </FormItem>
       )}
     />

@@ -1,10 +1,11 @@
 'use client'
 
 import type * as LabelPrimitive from '@radix-ui/react-label'
+import type { useTranslations } from 'next-intl'
 import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form'
 import { Label } from '@/components/ui/label'
-import { cn } from '@/lib/utils'
 
+import { cn } from '@/lib/utils'
 import { Slot } from '@radix-ui/react-slot'
 import * as React from 'react'
 import {
@@ -134,7 +135,15 @@ function FormDescription({ className, ...props }: React.ComponentProps<'p'>) {
   )
 }
 
-function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
+function FormMessage(
+  {
+    className,
+    t,
+    tv = undefined,
+    ...props
+  }:
+    React.ComponentProps<'p'> & { t?: ReturnType<typeof useTranslations>, tv?: any },
+) {
   const { error, formMessageId } = useFormField()
   const body = error ? String(error?.message ?? '') : props.children
 
@@ -149,7 +158,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
       className={cn('text-destructive text-sm', className)}
       {...props}
     >
-      {body}
+      {t ? t(body, tv) : body}
     </p>
   )
 }
