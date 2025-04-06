@@ -10,6 +10,7 @@ This is a multilingual admin web application based on Next.js, developed using t
 - Use Tailwind for CSS-in-JS styling.
 - Use SWR for request.
 - Use next-auth for auth.
+- Use pnpm for package manager.
 
 
 ## File Structure  
@@ -18,3 +19,4 @@ This is a multilingual admin web application based on Next.js, developed using t
 - `src/server/api`: Server function.
 - `src/app/api`: API endpoints.
 - `src/hooks`: React use hooks.
+- `.test.ts`: Vitest use test file.
