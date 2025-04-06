@@ -19,11 +19,12 @@ iconify 使用的是tailwind4 的插件
 ---
 
 ### todo
-vitest 测试用例
-prisma: seed
-引入日志库
-swr全局封装
-useForm
+ - [X] vitest 测试用例
+ - [ ] prisma: seed
+ - [X] 引入日志库
+ - [ ] swr全局封装
+ - [ ] useForm
+ - [ ] login and signup
 
 ## docker
 
