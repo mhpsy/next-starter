@@ -8,9 +8,13 @@ This is a multilingual admin web application based on Next.js, developed using t
 - Data validation is handled using Zod.
 - Use next-intl for internationalization.  
 - Use Tailwind for CSS-in-JS styling.
+- Use SWR for request.
+- Use next-auth for auth.
+
 
 ## File Structure  
-- `src/components/ui`: Reusable UI components  
-- `src/messages`: Next.js pages supporting multiple languages  
-- `src/app/api`: API service functions  
-- `src/hooks`: React use hooks
+- `src/components/ui`: Reusable UI components.
+- `src/messages`: Next.js pages supporting multiple languages.
+- `src/server/api`: Server function.
+- `src/app/api`: API endpoints.
+- `src/hooks`: React use hooks.
