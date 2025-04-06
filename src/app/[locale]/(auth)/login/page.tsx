@@ -2,24 +2,36 @@
 
 import { Link } from '@/components/common/link'
 import { FormInput } from '@/components/from/form-input'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+
 import { Button } from '@/components/ui/button'
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Form,
 } from '@/components/ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { signIn } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { use } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useAuthError } from '../error-handle'
+import { signinFn } from '../signinFn'
 
-export default function LoginPage() {
+export default function LoginPage(
+  {
+    searchParams,
+  }: {
+    searchParams: Promise<{ callbackUrl: string | undefined }>
+  },
+) {
   const t = useTranslations('Auth')
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { callbackUrl } = use(searchParams)
+
+  const {
+    handleAuthAction,
+    authError,
+    isLoading,
+  } = useAuthError()
 
   const formSchema = z.object({
     username: z.string().min(1, { message: t('usernameRequired') }),
@@ -36,56 +48,61 @@ export default function LoginPage() {
     },
   })
 
-  async function onSubmit(data: FormoSchema) {
-    try {
-      setLoading(true)
-      setError(null)
-
-      const result = await signIn('credentials', {
-        username: data.username,
-        password: data.password,
-        redirect: false,
-      })
-
-      if (result?.error) {
-        setError(result.error || t('loginFailed'))
-        console.error('登录失败:', result.error)
-      }
-      else {
-        // 登录成功，跳转到主页或其他页面
-        router.push('/dashboard')
-      }
-    }
-    catch (error) {
-      setError(t('loginError'))
-      console.error('登录过程中出错:', error)
-    }
-    finally {
-      setLoading(false)
-    }
+  function setForm() {
+    form.setValue('username', 'user47257399')
+    form.setValue('password', 'Test454@7694')
+    form.trigger()
   }
 
   return (
     <>
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">{t('logIn')}</CardTitle>
+        <CardTitle className="text-2xl font-bold text-center">
+          {t('logIn')}
+        </CardTitle>
         <CardDescription className="text-center">
           {t('signInToYourAccount')}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                <span className="block sm:inline">{error}</span>
+        {process.env.NODE_ENV === 'development' && (
+          <Button onClick={() => setForm()}>
+            setForm
+          </Button>
+        )}
+        {authError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>
+              <div className="flex items-center gap-2">
+                <span className="icon-[material-symbols--warning-outline-rounded]" style={{ width: '16px', height: '16px' }}></span>
+                {t(authError)}
               </div>
-            )}
+            </AlertDescription>
+          </Alert>
+        )}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(async (data) => {
+              try {
+                const response = await handleAuthAction(async () => {
+                  return await signinFn({
+                    ...data,
+                    redirectTo: callbackUrl,
+                  })
+                })
+              }
+              catch (err) {
+                // do nothing
+              }
+            })}
+            className="space-y-6"
+          >
             <FormInput
               control={form.control}
               name="username"
               label={t('username')}
               placeholder={t('usernamePlaceholder')}
+              disabled={isLoading}
             />
             <FormInput
               control={form.control}
@@ -93,13 +110,14 @@ export default function LoginPage() {
               label={t('password')}
               type="password"
               placeholder={t('passwordPlaceholder')}
+              disabled={isLoading}
             />
             <Button
               type="submit"
               className="w-full transition-all py-2 text-base font-medium hover:shadow-md"
-              disabled={loading}
+              disabled={isLoading}
             >
-              {loading ? t('loggingIn') : t('logIn')}
+              {isLoading ? t('loggingIn') : t('logIn')}
             </Button>
             <div className="text-center mt-4">
               <p className="text-sm text-muted-foreground">

@@ -24,6 +24,7 @@
   "Auth": {
     "signUp": "注册",
     "logIn": "登录",
+    "loggingIn": "登录中...",
     "email": "邮箱",
     "password": "密码",
     "confirmPassword": "确认密码",
@@ -66,6 +67,14 @@
     "passwordMustHaveUppercase": "密码必须至少有一个大写字母",
     "formFilledForDebug": "调试使用",
     "fillForm": "调试使用填充表格",
-    "signing": "注册中~"
+    "signing": "注册中~",
+    "signupSuccess": "注册成功，登录中，稍等一下...",
+    "signupError": "注册失败",
+    "usernameRequired": "请输入用户名",
+    "dontHaveUser": "抱歉，我们没有这个用户",
+    "inputError": "抱歉，请检查您的意见",
+    "loginFailed": "登录失败",
+    "passwordError": "抱歉，您的密码不正确",
+    "unknownError": "抱歉，出了点问题"
   }
 }

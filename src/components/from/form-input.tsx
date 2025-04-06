@@ -22,6 +22,7 @@ interface FormInputProps<T extends FieldValues> {
   className?: string
   t?: ReturnType<typeof useTranslations>
   tv?: any
+  disabled?: boolean
 }
 
 export function FormInput<T extends FieldValues>({
@@ -34,6 +35,7 @@ export function FormInput<T extends FieldValues>({
   className,
   t,
   tv = undefined,
+  disabled = false,
 }: FormInputProps<T>) {
   return (
     <FormField
@@ -48,6 +50,7 @@ export function FormInput<T extends FieldValues>({
               {...field}
               className={`transition-all focus:ring-2 focus:ring-offset-1 ${className || ''}`}
               placeholder={placeholder}
+              disabled={disabled}
             />
           </FormControl>
           {description && (

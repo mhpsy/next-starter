@@ -3,9 +3,8 @@
 import type { SignupSchema } from '@/lib/schemes/signup'
 import { signupSchema } from '@/lib/schemes/signup'
 import { createServerAction } from '@/server/lib/action'
-import { log } from '@/server/lib/log'
+import { getHashedPassword } from '@/server/lib/password'
 import prisma from '@/server/lib/prisma'
-import bcrypt from 'bcrypt'
 import { omit } from 'radash'
 /**
  * register
@@ -13,7 +12,6 @@ import { omit } from 'radash'
  * @returns
  */
 export const signup = createServerAction(async (signupInput: SignupSchema) => {
-  log('signup', signupInput)
   const signupData = signupSchema.parse(signupInput)
   const { username, email, password } = signupData
 
@@ -30,12 +28,11 @@ export const signup = createServerAction(async (signupInput: SignupSchema) => {
 
   // create user
   // bcrypt password
-  const hashedPassword = await bcrypt.hash(password, 10)
   const user = await prisma.admin_user.create({
     data: {
       username,
       email,
-      password,
+      password: await getHashedPassword(password),
     },
   })
 

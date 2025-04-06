@@ -4,6 +4,7 @@ import type { SignupSchema } from '@/lib/schemes/signup'
 import { Link } from '@/components/common/link'
 import { FormCheckbox } from '@/components/from/form-checkbox'
 import { FormInput } from '@/components/from/form-input'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -14,11 +15,28 @@ import { signupSchema } from '@/lib/schemes/signup'
 import { signup } from '@/server/api/auth/signup'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
+import { use } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import useSWRMutation from 'swr/mutation'
+import { useAuthError } from '../error-handle'
+import { signinFn } from '../signinFn'
 
-export default function RegisterPage() {
+export default function RegisterPage(
+  {
+    searchParams,
+  }: {
+    searchParams: Promise<{ callbackUrl: string | undefined }>
+  },
+) {
+  const {
+    handleAuthAction,
+    authError,
+    isLoading,
+  } = useAuthError()
+
+  const { callbackUrl } = use(searchParams)
+
   const t = useTranslations('Auth')
   const formSchema = signupSchema
 
@@ -46,6 +64,13 @@ export default function RegisterPage() {
     console.warn(result)
     if (result?.ok) {
       toast.success(t('signupSuccess'))
+      const loginResult = await handleAuthAction(async () => {
+        return await signinFn({
+          ...data,
+          redirectTo: callbackUrl,
+        })
+      })
+      console.warn(loginResult)
     }
     else if (result?.error) {
       toast.error(`${t('signupError')}: ${result.error}`)
@@ -85,6 +110,16 @@ export default function RegisterPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {authError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>
+              <div className="flex items-center gap-2">
+                <span className="icon-[material-symbols--warning-outline-rounded]" style={{ width: '16px', height: '16px' }}></span>
+                {t(authError)}
+              </div>
+            </AlertDescription>
+          </Alert>
+        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormInput
@@ -95,6 +130,7 @@ export default function RegisterPage() {
               description={t('usernameDescription')}
               t={t}
               tv={{ min: 5, max: 50 }}
+              disabled={isMutating || isLoading}
             />
             <FormInput
               control={form.control}
@@ -105,6 +141,7 @@ export default function RegisterPage() {
               description={t('emailDescription')}
               t={t}
               tv={{ min: 5, max: 50 }}
+              disabled={isMutating || isLoading}
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormInput
@@ -115,6 +152,7 @@ export default function RegisterPage() {
                 placeholder="••••••••••"
                 t={t}
                 tv={{ min: 10, max: 50 }}
+                disabled={isMutating || isLoading}
               />
               <FormInput
                 control={form.control}
@@ -124,6 +162,7 @@ export default function RegisterPage() {
                 placeholder="••••••••••"
                 t={t}
                 tv={{ min: 10, max: 50 }}
+                disabled={isMutating || isLoading}
               />
             </div>
             <FormCheckbox
@@ -135,7 +174,7 @@ export default function RegisterPage() {
             <Button
               type="submit"
               className="w-full transition-all py-2 text-base font-medium hover:shadow-md"
-              disabled={isMutating}
+              disabled={isMutating || isLoading}
             >
               {isMutating ? t('signing') : t('signUp')}
             </Button>

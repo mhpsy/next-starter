@@ -23,8 +23,13 @@ iconify 使用的是tailwind4 的插件
  - [ ] prisma: seed
  - [X] 引入日志库
  - [ ] swr全局封装
- - [ ] useForm
- - [ ] login and signup
+ - [x] useForm
+ - [x] login and signup
+ - [ ] 前后端统一的错误处理 error handle
+ - [ ] 项目结构好乱啊
+ - [ ] authjs的适配器，数据库用prisma，session用redis，要自己写一个
+ - [ ] dashboard的整体布局
+ - [ ]
 
 ## docker
 
