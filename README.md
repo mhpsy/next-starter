@@ -28,6 +28,7 @@ iconify 使用的是tailwind4 的插件
  - [ ] 前后端统一的错误处理 error handle
  - [ ] 项目结构好乱啊
  - [ ] authjs的适配器，数据库用prisma，session用redis，要自己写一个
+   - [ ] 按照这个来https://github.com/nextauthjs/next-auth/blob/main/packages/adapter-pg/src/index.ts
  - [ ] dashboard的整体布局
  - [ ]
 
