@@ -1,7 +1,7 @@
 'use server'
 
-import type { SignupSchema } from '@/lib/schemes/signup'
-import { signupSchema } from '@/lib/schemes/signup'
+import type { SignupSchema } from '@/schemes/login/signup'
+import { signupSchema } from '@/schemes/login/signup'
 import { createServerAction } from '@/server/lib/action'
 import { getHashedPassword } from '@/server/lib/password'
 import prisma from '@/server/lib/prisma'

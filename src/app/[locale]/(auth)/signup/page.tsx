@@ -1,6 +1,6 @@
 'use client'
 
-import type { SignupSchema } from '@/lib/schemes/signup'
+import type { SignupSchema } from '@/schemes/login/signup'
 import { Link } from '@/components/common/link'
 import { FormCheckbox } from '@/components/from/form-checkbox'
 import { FormInput } from '@/components/from/form-input'
@@ -11,7 +11,7 @@ import {
   Form,
 } from '@/components/ui/form'
 import { SWRKEY } from '@/constants/swrKey'
-import { signupSchema } from '@/lib/schemes/signup'
+import { signupSchema } from '@/schemes/login/signup'
 import { signup } from '@/server/api/auth/signup'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'

@@ -1,5 +1,7 @@
 import type { admin_user } from '@prisma/client'
+import type { User } from 'next-auth'
 import { AuthProviders } from '@/constants'
+import { nullToUndefined } from '@/lib'
 import log from '@/server/lib/log'
 import { verifyPassword } from '@/server/lib/password'
 import prisma from '@/server/lib/prisma'
@@ -63,7 +65,9 @@ const { handlers, auth, signIn, signOut } = NextAuth({
           if (isValid) {
             validUser = user
             log.info('validUser', validUser)
-            return omit(validUser, ['password'])
+            // 转换为NextAuth期望的User类型，将null值转为undefined
+            const userWithoutPassword = omit(validUser, ['password'])
+            return nullToUndefined(userWithoutPassword) as User
           }
         }
 
