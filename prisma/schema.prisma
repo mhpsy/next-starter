@@ -94,6 +94,60 @@ model admin_user {
 
   user_role admin_user_role[]
   user_post admin_user_post[]
+  
+  /// user accounts
+  accounts admin_account[]
+}
+
+/**
+provider: 区分第三方登录服务（如 github, google）。
+provider_account_id: 第三方服务返回的用户唯一标识符（如 GitHub 的 id 或 Google 的 sub）。
+refresh_token: 用于刷新访问令牌。
+access_token: 短期访问令牌，用于调用 API。
+expires_at: 访问令牌的过期时间。
+scope: OAuth 授权范围（如 email, profile）。
+id_token: 一些服务会返回的 JWT，用于解码用户信息。
+*/
+/// account
+model admin_account {
+  account_id Int @id @default(autoincrement())
+
+  /// provider
+  provider          String
+  /// provider account id
+  provider_account_id String
+  /// refresh token
+  refresh_token     String?
+  /// access token
+  access_token      String?
+  /// expires at
+  expires_at        Int?
+  /// token type
+  token_type        String?
+  /// scope
+  scope             String?
+  /// id token
+  id_token          String?
+  /// session state
+  session_state     String?
+  
+  /// user id
+  user_id Int
+  /// user
+  user admin_user @relation(fields: [user_id], references: [user_id])
+  
+  /// status 0: normal 1: disabled
+  status          Int      @default(0)
+  /// delete_flag 0: normal 1: deleted
+  delete_flag     Int      @default(0)
+  created_by_id   Int?
+  created_by_name String?
+  updated_by_id   Int?
+  updated_by_name String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt()
+  
+  remark String?
 }
 
 /// role

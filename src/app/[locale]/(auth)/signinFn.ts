@@ -4,13 +4,15 @@ import { isRedirectError } from '@/lib/error'
 import { signIn } from '@/server/lib/auth'
 import { getLocale } from 'next-intl/server'
 
+interface SignInType {
+  credentials: 'github' | 'username_or_email'
+  username?: string
+  password?: string
+  redirectTo?: string
+}
+
 export async function signinFn(
-  formData: {
-    username: string
-    password: string
-    // if have use this, if not use default redirectTo /[locale]
-    redirectTo?: string
-  },
+  data: SignInType,
 ) {
   const locale = await getLocale()
   if (process.env.NODE_ENV === 'development') {
@@ -18,9 +20,9 @@ export async function signinFn(
   }
 
   try {
-    const result = await signIn('credentials', {
-      redirectTo: formData.redirectTo || `/${locale}`,
-      ...formData,
+    const result = await signIn(data.credentials, {
+      redirectTo: data.redirectTo || `/${locale}`,
+      ...data,
     })
     return { success: true, result }
   }

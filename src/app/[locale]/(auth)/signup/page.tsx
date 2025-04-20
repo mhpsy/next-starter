@@ -10,7 +10,7 @@ import { CardContent, CardDescription, CardHeader, CardTitle } from '@/component
 import {
   Form,
 } from '@/components/ui/form'
-import { SWR_KEY } from '@/constants/swr-key'
+import { SWRKEY } from '@/constants/swrKey'
 import { signupSchema } from '@/lib/schemes/signup'
 import { signup } from '@/server/api/auth/signup'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -52,7 +52,7 @@ export default function RegisterPage(
   })
 
   const { trigger, isMutating } = useSWRMutation(
-    SWR_KEY.AUTH.SIGNUP,
+    SWRKEY.AUTH.SIGNUP,
     async (_key, { arg }: { arg: SignupSchema }) => {
       return await signup(arg)
     },
@@ -66,7 +66,9 @@ export default function RegisterPage(
       toast.success(t('signupSuccess'))
       const loginResult = await handleAuthAction(async () => {
         return await signinFn({
-          ...data,
+          credentials: 'username_or_email',
+          username: data.username,
+          password: data.password,
           redirectTo: callbackUrl,
         })
       })

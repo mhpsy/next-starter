@@ -1,4 +1,4 @@
-export const SWR_KEY = {
+export const SWRKEY = {
   AUTH: {
     SIGNUP: '/api/auth/signup',
     LOGIN: '/api/auth/login',

@@ -30,7 +30,7 @@ function formatArgs(args: any[]): string {
  */
 function createLogFunction(level: LogLevel) {
   return (message: string, ...args: any[]) => {
-    const formattedMessage = `${message} ${formatArgs(args)}`
+    const formattedMessage = `${message} ${formatArgs(args)}\n`
     logger[level](formattedMessage)
   }
 }
@@ -40,7 +40,7 @@ function createLogFunction(level: LogLevel) {
  * 默认使用 info 级别记录日志
  */
 export function log(message: string, ...args: any[]) {
-  const formattedMessage = `${message} ${formatArgs(args)}`
+  const formattedMessage = `${message} ${formatArgs(args)}\n`
   logger.info(formattedMessage)
 }
 

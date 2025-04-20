@@ -75,6 +75,7 @@
     "inputError": "抱歉，请检查您的意见",
     "loginFailed": "登录失败",
     "passwordError": "抱歉，您的密码不正确",
-    "unknownError": "抱歉，出了点问题"
+    "unknownError": "抱歉，出了点问题",
+    "signInWithGithub": "通过github登录"
   }
 }

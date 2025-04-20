@@ -30,7 +30,8 @@ iconify 使用的是tailwind4 的插件
  - [ ] authjs的适配器，数据库用prisma，session用redis，要自己写一个
    - [ ] 按照这个来https://github.com/nextauthjs/next-auth/blob/main/packages/adapter-pg/src/index.ts
  - [ ] dashboard的整体布局
- - [ ]
+ - [ ] 邮箱验证相关，如果是OAuth登录进来不要默认验证
+ - [ ] 密码，如果OAuth登录密码要处理，目前是必填项
 
 ## docker
 

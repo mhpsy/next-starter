@@ -75,6 +75,7 @@
     "dontHaveUser": "sorry, we dont have this user",
     "passwordError": "sorry, your password is incorrect",
     "inputError": "sorry, please check your input",
-    "unknownError": "sorry, something went wrong"
+    "unknownError": "sorry, something went wrong",
+    "signInWithGithub": "login by github"
   }
 }

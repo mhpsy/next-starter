@@ -86,7 +86,9 @@ export default function LoginPage(
               try {
                 const response = await handleAuthAction(async () => {
                   return await signinFn({
-                    ...data,
+                    credentials: 'username_or_email',
+                    username: data.username,
+                    password: data.password,
                     redirectTo: callbackUrl,
                   })
                 })
@@ -118,6 +120,24 @@ export default function LoginPage(
               disabled={isLoading}
             >
               {isLoading ? t('loggingIn') : t('logIn')}
+            </Button>
+            <Button
+              className="w-full transition-all py-2 text-base font-medium hover:shadow-md"
+              variant="outline"
+              disabled={isLoading}
+              onClick={() => {
+                handleAuthAction(async () => {
+                  return await signinFn({
+                    credentials: 'github',
+                    redirectTo: callbackUrl,
+                  })
+                })
+              }}
+            >
+              <span className="icon-[mdi--github]"></span>
+              <span className="ml-2">
+                {t('signInWithGithub')}
+              </span>
             </Button>
             <div className="text-center mt-4">
               <p className="text-sm text-muted-foreground">

@@ -1,9 +1,14 @@
+import type { admin_user } from '@prisma/client'
+import { AuthProviders } from '@/constants'
 import log from '@/server/lib/log'
 import { verifyPassword } from '@/server/lib/password'
 import prisma from '@/server/lib/prisma'
 import NextAuth, { CredentialsSignin } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import GitHub from 'next-auth/providers/github'
 import { omit } from 'radash'
+import { v4 as uuidv4 } from 'uuid'
+import myAdapter from './adapter'
 
 class DontHaveUserError extends CredentialsSignin {
   code = 'dont_have_user'
@@ -19,8 +24,13 @@ class InputError extends CredentialsSignin {
 
 const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
+    GitHub({
+      clientId: process.env.AUTH_GITHUB_ID,
+      clientSecret: process.env.AUTH_GITHUB_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
     CredentialsProvider({
-      name: 'Credentials',
+      name: AuthProviders.UsernameOrEmail,
       credentials: {
         username: { label: 'username', type: 'text' },
         password: { label: 'password', type: 'password' },
@@ -47,7 +57,7 @@ const { handlers, auth, signIn, signOut } = NextAuth({
           throw new DontHaveUserError()
         }
 
-        let validUser: any = null
+        let validUser: admin_user | null = null
         for (const user of users) {
           const isValid = await verifyPassword(password, user.password)
           if (isValid) {
@@ -64,15 +74,15 @@ const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: '/en/login',
   },
-  // session: {
-  //   // strategy: 'jwt'|'database',
-  //   maxAge: 60 * 60 * 24 * 30, // 30 days max live time
-  //   updateAge: 60 * 60 * 24, // 1 day update time
-  //   generateSessionToken: () => {
-  //     return uuidv4()
-  //   },
-  // },
-  // adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: 'database',
+    maxAge: 60 * 60 * 24 * 30, // 30 days max live time
+    updateAge: 60 * 60 * 24, // 1 day update time
+    generateSessionToken: () => {
+      return uuidv4()
+    },
+  },
+  adapter: myAdapter(),
   callbacks: {
     signIn({ user }) {
       log.info('signIn', user)
@@ -103,13 +113,16 @@ const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return token
     },
-    session({ session, token }) {
-      log.info('session', session, token)
+    session({ session, user }) {
+      // session: { user: AdapterUser } & AdapterSession
+      /** Available when is set to `strategy: "database"`. */
+      // /user: AdapterUser
+      log.info('session', session, user)
       // 如果token中有用户信息，则合并到session中
-      if (token.user) {
+      if (user) {
         session.user = {
           ...session.user,
-          ...token.user,
+          ...user,
         }
       }
       return session
